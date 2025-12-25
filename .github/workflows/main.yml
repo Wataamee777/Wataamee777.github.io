@@ -1,10 +1,9 @@
 name: Generate Pages JSON
 
 on:
-  push:
   workflow_dispatch:
   schedule:
-    - cron: "0 0 * * *" # 6時間ごと
+    - cron: "0 0 * * *" # 毎日1回（UTC 00:00 / JST 09:00）
 
 permissions:
   contents: write
@@ -12,6 +11,7 @@ permissions:
 jobs:
   generate:
     runs-on: ubuntu-latest
+
     steps:
       - uses: actions/checkout@v4
 
@@ -20,16 +20,35 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           mkdir -p data
-          echo "[]" > data/pages.json
 
-          gh api users/${{ github.repository_owner }}/repos --paginate \
-            --jq '[.[] | select(.has_pages==true) | {
+          OWNER="${{ github.repository_owner }}"
+          ORGS=("hatoage-team") # ← ここに組織名を入れる
+
+          # 個人リポ
+          gh api users/$OWNER/repos --paginate \
+            --jq '[.[] | select(.has_pages == true) | {
               name: .name,
-              url: ("https://${{ github.repository_owner }}.github.io/" + .name + "/"),
+              owner: "'$OWNER'",
+              url: ("https://'${OWNER}'.github.io/" + .name + "/"),
               updated: .updated_at
             }]' > data/pages.json
 
-      - name: Commit
+          # 組織リポを追加
+          for ORG in "${ORGS[@]}"; do
+            gh api orgs/$ORG/repos --paginate \
+              --jq '[.[] | select(.has_pages == true) | {
+                name: .name,
+                owner: "'$ORG'",
+                url: ("https://'${ORG}'.github.io/" + .name + "/"),
+                updated: .updated_at
+              }]' >> data/pages.json
+          done
+
+          # JSONを1配列に正規化（←超重要）
+          jq -s '[.[][]] | sort_by(.updated) | reverse' data/pages.json > data/pages.tmp
+          mv data/pages.tmp data/pages.json
+
+      - name: Commit pages.json
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
