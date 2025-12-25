@@ -1,4 +1,4 @@
-name: Generate Pages JSON
+name: Generate Pages JSON (with CNAME)
 
 on:
   workflow_dispatch:
@@ -20,32 +20,52 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           mkdir -p data
-
           OWNER="${{ github.repository_owner }}"
-          ORGS=("hatoage-team") # ← ここに組織名を入れる
+          ORGS=("hatoage-team") # ← 組織名
 
-          # 個人リポ
-          gh api users/$OWNER/repos --paginate \
-            --jq '[.[] | select(.has_pages == true) | {
-              name: .name,
-              owner: "'$OWNER'",
-              url: ("https://'${OWNER}'.github.io/" + .name + "/"),
-              updated: .updated_at
-            }]' > data/pages.json
+          echo "[]" > data/pages.json
 
-          # 組織リポを追加
-          for ORG in "${ORGS[@]}"; do
-            gh api orgs/$ORG/repos --paginate \
-              --jq '[.[] | select(.has_pages == true) | {
+          fetch_pages () {
+            local OWNER_NAME="$1"
+            local TYPE="$2" # user / org
+
+            gh api $TYPE/$OWNER_NAME/repos --paginate \
+              --jq '.[] | select(.has_pages == true) | {
                 name: .name,
-                owner: "'$ORG'",
-                url: ("https://'${ORG}'.github.io/" + .name + "/"),
+                owner: "'$OWNER_NAME'",
                 updated: .updated_at
-              }]' >> data/pages.json
+              }' | while read -r repo; do
+                NAME=$(echo "$repo" | jq -r .name)
+
+                # Pages API（CNAME取得）
+                PAGE_INFO=$(gh api repos/$OWNER_NAME/$NAME/pages 2>/dev/null || true)
+                CNAME=$(echo "$PAGE_INFO" | jq -r '.cname // null')
+
+                jq -n \
+                  --arg name "$NAME" \
+                  --arg owner "$OWNER_NAME" \
+                  --arg updated "$(echo "$repo" | jq -r .updated)" \
+                  --arg cname "$CNAME" \
+                  '{
+                    name: $name,
+                    owner: $owner,
+                    url: ("https://" + $owner + ".github.io/" + $name + "/"),
+                    cname: ($cname == "" ? null : $cname),
+                    updated: $updated
+                  }'
+              done
+          }
+
+          # 個人
+          fetch_pages "$OWNER" "users" >> data/pages.json
+
+          # 組織
+          for ORG in "${ORGS[@]}"; do
+            fetch_pages "$ORG" "orgs" >> data/pages.json
           done
 
-          # JSONを1配列に正規化（←超重要）
-          jq -s '[.[][]] | sort_by(.updated) | reverse' data/pages.json > data/pages.tmp
+          # 正規化（配列1個）
+          jq -s '[.[]] | sort_by(.updated) | reverse' data/pages.json > data/pages.tmp
           mv data/pages.tmp data/pages.json
 
       - name: Commit pages.json
@@ -53,5 +73,5 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add data/pages.json
-          git commit -m "update pages.json" || true
+          git commit -m "update pages.json with cname" || true
           git push
