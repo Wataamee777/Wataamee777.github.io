@@ -1,0 +1,38 @@
+name: Generate Pages JSON
+
+on:
+  push:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 0 * * *" # 6時間ごと
+
+permissions:
+  contents: write
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Generate pages.json
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          mkdir -p data
+          echo "[]" > data/pages.json
+
+          gh api users/${{ github.repository_owner }}/repos --paginate \
+            --jq '[.[] | select(.has_pages==true) | {
+              name: .name,
+              url: ("https://${{ github.repository_owner }}.github.io/" + .name + "/"),
+              updated: .updated_at
+            }]' > data/pages.json
+
+      - name: Commit
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/pages.json
+          git commit -m "update pages.json" || true
+          git push
