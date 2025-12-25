@@ -3,7 +3,7 @@ name: Generate Pages JSON
 on:
   workflow_dispatch:
   schedule:
-    - cron: "0 0 * * *"
+    - cron: "0 0 * * *" # 1日1回
 
 permissions:
   contents: write
@@ -11,6 +11,10 @@ permissions:
 jobs:
   generate:
     runs-on: ubuntu-latest
+
+    env:
+      ORGS: "hatoage-team"
+
     steps:
       - uses: actions/checkout@v4
 
@@ -18,16 +22,27 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
+          set +e
           mkdir -p data
           echo "[]" > data/pages.json
 
-          repos=$(gh api users/${{ github.repository_owner }}/repos --paginate)
+          echo "📦 Fetch user repos"
+          all_repos=$(gh api users/${{ github.repository_owner }}/repos --paginate)
 
-          echo "$repos" | jq -c '.[] | select(.has_pages==true)' | while read repo; do
+          echo "🏢 Fetch org repos"
+          for org in $ORGS; do
+            org_repos=$(gh api orgs/$org/repos --paginate || echo "[]")
+            all_repos=$(jq -s '.[0] + .[1]' \
+              <(echo "$all_repos") <(echo "$org_repos"))
+          done
+
+          echo "$all_repos" | jq -c '.[] | select(.has_pages==true)' | while read repo; do
             name=$(echo "$repo" | jq -r .name)
             owner=$(echo "$repo" | jq -r .owner.login)
-            desc=$(echo "$repo" | jq -r .description)
+            desc=$(echo "$repo" | jq -r '.description // empty')
             updated=$(echo "$repo" | jq -r .updated_at)
+
+            echo "🔍 $owner/$name"
 
             pages=$(gh api repos/$owner/$name/pages 2>/dev/null || echo "{}")
             cname=$(echo "$pages" | jq -r '.cname // empty')
@@ -40,32 +55,34 @@ jobs:
 
             html=$(curl -L --max-time 8 "$url" || true)
 
-            title=$(echo "$html" | grep -oP '(?<=<title>).*?(?=</title>)' | head -n1)
-            meta_desc=$(echo "$html" | grep -oP '(?<=name="description" content=").*?(?=")' | head -n1)
-            icon=$(echo "$html" | grep -oP '(?<=rel="icon" href=").*?(?=")' | head -n1)
+            title=$(echo "$html" | grep -oiP '(?<=<title>).*?(?=</title>)' | head -n1)
+            meta_desc=$(echo "$html" | grep -oiP '(?<=name="description" content=").*?(?=")' | head -n1)
+            icon=$(echo "$html" | grep -oiP '(?<=rel="icon" href=").*?(?=")' | head -n1)
 
             jq --arg name "$name" \
+               --arg owner "$owner" \
                --arg url "$url" \
                --arg updated "$updated" \
                --arg title "${title:-$name}" \
                --arg description "${meta_desc:-$desc}" \
                --arg favicon "$icon" \
                '. += [{
-                 name:$name,
-                 url:$url,
-                 updated:$updated,
-                 title:$title,
-                 description:$description,
-                 favicon:$favicon
+                 name: $name,
+                 owner: $owner,
+                 url: $url,
+                 updated: $updated,
+                 title: $title,
+                 description: $description,
+                 favicon: $favicon
                }]' data/pages.json > data/tmp.json
 
             mv data/tmp.json data/pages.json
           done
 
-      - name: Commit
+      - name: Commit and push
         run: |
-          git config user.name github-actions[bot]
-          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add data/pages.json
           git commit -m "update pages.json" || true
           git push
