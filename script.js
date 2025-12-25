@@ -1,42 +1,68 @@
+const listEl = document.getElementById("list");
+const searchEl = document.getElementById("search");
+
 let pages = [];
 
-fetch("./data/pages.json")
+fetch("data/pages.json")
   .then(r => r.json())
   .then(data => {
-    pages = data;
-    render();
+    pages = data.sort(
+      (a, b) => new Date(b.updated) - new Date(a.updated)
+    );
+    render(pages);
   });
 
-const cards = document.getElementById("cards");
-const search = document.getElementById("search");
-const sort = document.getElementById("sort");
-const empty = document.getElementById("empty");
+searchEl.addEventListener("input", () => {
+  const q = searchEl.value.toLowerCase();
+  render(
+    pages.filter(p =>
+      (p.title || "").toLowerCase().includes(q) ||
+      (p.name || "").toLowerCase().includes(q) ||
+      (p.description || "").toLowerCase().includes(q)
+    )
+  );
+});
 
-search.addEventListener("input", render);
-sort.addEventListener("change", render);
+function render(items) {
+  listEl.innerHTML = "";
 
-function render() {
-  const q = search.value.toLowerCase();
-  let list = pages.filter(p => p.name.toLowerCase().includes(q));
+  for (const p of items) {
+    const card = document.createElement("div");
+    card.className = "card";
 
-  if (sort.value === "updated") {
-    list.sort((a, b) => new Date(b.updated) - new Date(a.updated));
-  } else {
-    list.sort((a, b) => a.name.localeCompare(b.name));
+    const img = document.createElement("img");
+    img.className = "icon";
+    img.src = getFavicon(p);
+    img.onerror = () => {
+      img.src = "assets/deficon-192.png";
+    };
+
+    const info = document.createElement("div");
+    info.className = "info";
+
+    const title = document.createElement("a");
+    title.href = p.url;
+    title.target = "_blank";
+    title.textContent = p.title || p.name;
+
+    const desc = document.createElement("div");
+    desc.className = "desc";
+    desc.textContent = p.description || "";
+
+    const updated = document.createElement("div");
+    updated.className = "updated";
+    updated.textContent =
+      "Updated: " + new Date(p.updated).toLocaleDateString();
+
+    info.append(title, desc, updated);
+    card.append(img, info);
+    listEl.append(card);
   }
+}
 
-  cards.innerHTML = "";
-  empty.classList.toggle("hidden", list.length !== 0);
-
-  for (const p of list) {
-    const div = document.createElement("div");
-    div.className = "card";
-    div.innerHTML = `
-      <a href="${p.url}" target="_blank">${p.name}</a>
-      <div class="meta">
-        更新: ${new Date(p.updated).toLocaleString()}
-      </div>
-    `;
-    cards.appendChild(div);
+function getFavicon(p) {
+  if (p.favicon) {
+    return new URL(p.favicon, p.url).href;
   }
+  return p.url.replace(/\/$/, "") + "/favicon.ico";
 }
