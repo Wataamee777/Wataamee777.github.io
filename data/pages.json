@@ -54,6 +54,15 @@
     "favicon": ""
   },
   {
+    "name": "cdn",
+    "owner": "Wataamee777",
+    "url": "https://cdn.wata777.f5.si/",
+    "updated": "2026-01-05T00:17:42Z",
+    "title": "home - cdn",
+    "description": "",
+    "favicon": ""
+  },
+  {
     "name": "converter.site",
     "owner": "Wataamee777",
     "url": "https://Wataamee777.github.io/converter.site/",
@@ -399,7 +408,7 @@
     "name": "README-wata",
     "owner": "Wataamee777",
     "url": "https://wata777.f5.si/",
-    "updated": "2026-01-04T01:29:21Z",
+    "updated": "2026-01-05T02:25:50Z",
     "title": "わたあめえ",
     "description": "わたあめえの自己紹介",
     "favicon": "assets/favicon.ico"
@@ -552,7 +561,7 @@
     "name": "Wataamee777.github.io",
     "owner": "Wataamee777",
     "url": "https://Wataamee777.github.io/Wataamee777.github.io/",
-    "updated": "2026-01-03T02:03:49Z",
+    "updated": "2026-01-04T02:26:52Z",
     "title": "My GitHub Pages",
     "description": "",
     "favicon": "assets/deficon-192.png"
@@ -583,6 +592,15 @@
     "title": "Site not found &middot; GitHub Pages",
     "description": "",
     "favicon": ""
+  },
+  {
+    "name": "religion",
+    "owner": "hatoage-team",
+    "url": "https://religion.hatoage.wata777.f5.si/",
+    "updated": "2026-01-05T00:09:31Z",
+    "title": "はとあげ教 — ホーム",
+    "description": "優しさをはとに、笑顔をあげに。はとあげ教公式サイト",
+    "favicon": "https://cdn.wata777.f5.si/hatoage/assets/favicon.ico"
   },
   {
     "name": "Tenso2",
