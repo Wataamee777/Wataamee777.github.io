@@ -333,6 +333,15 @@
     "favicon": "https://minecraft.sakurahp.f5.si/favicon.ico"
   },
   {
+    "name": "minecraft-sounds",
+    "owner": "Wataamee777",
+    "url": "https://Wataamee777.github.io/minecraft-sounds/",
+    "updated": "2026-01-18T12:35:02Z",
+    "title": "Minecraft Sounds Library",
+    "description": "",
+    "favicon": ""
+  },
+  {
     "name": "minegames",
     "owner": "Wataamee777",
     "url": "https://Wataamee777.github.io/minegames/",
@@ -408,7 +417,7 @@
     "name": "README-wata",
     "owner": "Wataamee777",
     "url": "https://wata777.f5.si/",
-    "updated": "2026-01-18T01:11:39Z",
+    "updated": "2026-01-19T01:49:51Z",
     "title": "わたあめえ",
     "description": "わたあめえの自己紹介",
     "favicon": "assets/favicon.ico"
@@ -561,7 +570,7 @@
     "name": "Wataamee777.github.io",
     "owner": "Wataamee777",
     "url": "https://Wataamee777.github.io/Wataamee777.github.io/",
-    "updated": "2026-01-17T02:05:27Z",
+    "updated": "2026-01-18T02:25:36Z",
     "title": "My GitHub Pages",
     "description": "",
     "favicon": "assets/deficon-192.png"
