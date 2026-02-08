@@ -279,6 +279,15 @@
     "favicon": ""
   },
   {
+    "name": "MAD-maker",
+    "owner": "Wataamee777",
+    "url": "https://Wataamee777.github.io/MAD-maker/",
+    "updated": "2026-02-07T07:55:10Z",
+    "title": "MAD Frequency MIDI Tool",
+    "description": "",
+    "favicon": ""
+  },
+  {
     "name": "mcpackMaker",
     "owner": "Wataamee777",
     "url": "https://Wataamee777.github.io/mcpackMaker/",
@@ -417,7 +426,7 @@
     "name": "README-wata",
     "owner": "Wataamee777",
     "url": "https://wata777.f5.si/",
-    "updated": "2026-02-07T01:12:00Z",
+    "updated": "2026-02-08T01:11:45Z",
     "title": "わたあめえ",
     "description": "わたあめえの自己紹介",
     "favicon": "assets/favicon.ico"
@@ -570,7 +579,7 @@
     "name": "Wataamee777.github.io",
     "owner": "Wataamee777",
     "url": "https://Wataamee777.github.io/Wataamee777.github.io/",
-    "updated": "2026-02-06T02:40:25Z",
+    "updated": "2026-02-07T02:35:13Z",
     "title": "My GitHub Pages",
     "description": "",
     "favicon": "assets/deficon-192.png"
