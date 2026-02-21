@@ -426,7 +426,7 @@
     "name": "README-wata",
     "owner": "Wataamee777",
     "url": "https://wata777.f5.si/",
-    "updated": "2026-02-20T00:02:33Z",
+    "updated": "2026-02-21T01:12:19Z",
     "title": "わたあめえ",
     "description": "わたあめえの自己紹介",
     "favicon": "assets/favicon.ico"
@@ -465,6 +465,15 @@
     "updated": "2025-02-11T03:38:11Z",
     "title": "すしネタイピング",
     "description": "",
+    "favicon": ""
+  },
+  {
+    "name": "Takasumistocks",
+    "owner": "Wataamee777",
+    "url": "https://Wataamee777.github.io/Takasumistocks/",
+    "updated": "2026-02-20T02:48:06Z",
+    "title": "Takasumi Stock Viewer",
+    "description": "※非公式であり公式APIを使用",
     "favicon": ""
   },
   {
@@ -579,7 +588,7 @@
     "name": "Wataamee777.github.io",
     "owner": "Wataamee777",
     "url": "https://Wataamee777.github.io/Wataamee777.github.io/",
-    "updated": "2026-02-19T02:45:22Z",
+    "updated": "2026-02-20T02:40:23Z",
     "title": "My GitHub Pages",
     "description": "",
     "favicon": "assets/deficon-192.png"
