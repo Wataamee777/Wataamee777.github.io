@@ -63,6 +63,15 @@
     "favicon": ""
   },
   {
+    "name": "CIS",
+    "owner": "Wataamee777",
+    "url": "https://Wataamee777.github.io/CIS/",
+    "updated": "2026-02-25T10:39:24Z",
+    "title": "CIS (Color Image System) Portal",
+    "description": "CIS(Color Image System)",
+    "favicon": ""
+  },
+  {
     "name": "converter.site",
     "owner": "Wataamee777",
     "url": "https://Wataamee777.github.io/converter.site/",
@@ -360,6 +369,15 @@
     "favicon": ""
   },
   {
+    "name": "MINEtype",
+    "owner": "Wataamee777",
+    "url": "https://Wataamee777.github.io/MINEtype/",
+    "updated": "2026-02-25T10:55:12Z",
+    "title": "MIME & ヘッダー拡張子推定ツール",
+    "description": "",
+    "favicon": ""
+  },
+  {
     "name": "Miq",
     "owner": "Wataamee777",
     "url": "https://miq.wataamee777.f5.si/",
@@ -426,7 +444,7 @@
     "name": "README-wata",
     "owner": "Wataamee777",
     "url": "https://wata777.f5.si/",
-    "updated": "2026-02-25T01:21:18Z",
+    "updated": "2026-02-26T00:03:17Z",
     "title": "わたあめえ",
     "description": "わたあめえの自己紹介",
     "favicon": "assets/favicon.ico"
@@ -588,7 +606,7 @@
     "name": "Wataamee777.github.io",
     "owner": "Wataamee777",
     "url": "https://Wataamee777.github.io/Wataamee777.github.io/",
-    "updated": "2026-02-24T02:43:45Z",
+    "updated": "2026-02-25T02:44:36Z",
     "title": "My GitHub Pages",
     "description": "",
     "favicon": "assets/deficon-192.png"
