@@ -18,6 +18,15 @@
     "favicon": ""
   },
   {
+    "name": "ARM64Linuxweb",
+    "owner": "Wataamee777",
+    "url": "https://Wataamee777.github.io/ARM64Linuxweb/",
+    "updated": "2026-03-30T09:48:38Z",
+    "title": "Web Linux on Arm64/Web",
+    "description": "ARM64(aarch64) weblinux",
+    "favicon": ""
+  },
+  {
     "name": "ATP-V1",
     "owner": "Wataamee777",
     "url": "https://Wataamee777.github.io/ATP-V1/",
@@ -444,7 +453,7 @@
     "name": "README-wata",
     "owner": "Wataamee777",
     "url": "https://wata777.f5.si/",
-    "updated": "2026-03-30T01:06:02Z",
+    "updated": "2026-03-31T00:02:57Z",
     "title": "わたあめえ",
     "description": "わたあめえの自己紹介",
     "favicon": "assets/favicon.ico"
@@ -615,7 +624,7 @@
     "name": "Wataamee777.github.io",
     "owner": "Wataamee777",
     "url": "https://Wataamee777.github.io/Wataamee777.github.io/",
-    "updated": "2026-03-29T03:18:35Z",
+    "updated": "2026-03-30T03:22:02Z",
     "title": "My GitHub Pages",
     "description": "",
     "favicon": "assets/deficon-192.png"
